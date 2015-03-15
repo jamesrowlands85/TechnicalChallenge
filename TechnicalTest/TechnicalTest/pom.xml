@@ -4,7 +4,7 @@
   <artifactId>TechnicalTest</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
     <testSourceDirectory>test</testSourceDirectory>
     <plugins>
       <plugin>
@@ -18,10 +18,15 @@
     </plugins>
   </build>
   <dependencies>
-  	<dependency>
-		<groupId>org.codehaus.jackson</groupId>
-		<artifactId>jackson-core-asl</artifactId>
-		<version>1.9.13</version>
+	<dependency>
+	  <groupId>com.fasterxml.jackson.core</groupId>
+	  <artifactId>jackson-core</artifactId>
+	  <version>2.5.1</version>
 	</dependency>
+	<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.5.1</version>
+  </dependency>
   </dependencies>
 </project>
