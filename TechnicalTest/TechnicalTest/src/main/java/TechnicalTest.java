@@ -64,6 +64,7 @@ public class TechnicalTest {
 		// print by rating
 		Map<String, List<Vehicle>> carsByType = new HashMap<>();
 		
+		// place each type into its own list
 		for(Vehicle car : carDetails.getSearch().getVehicleList()) {
 			Specification currentCarSpec = carSpecification.getSpecification(car.getSIPP());
 			List<Vehicle> currentCarType = carsByType.get(currentCarSpec.getCarType());
@@ -74,6 +75,7 @@ public class TechnicalTest {
 			currentCarType.add(car);
 		}
 		
+		// order by rating and only print the highest rated for each type
 		for(Entry<String, List<Vehicle>> entry : carsByType.entrySet()) {
 			Collections.sort(entry.getValue(), new Comparator<Vehicle>() {
 				@Override
@@ -92,6 +94,7 @@ public class TechnicalTest {
 		
 		carDetails = mapper.readValue(TechnicalTest.class.getResourceAsStream("/vehicles.json"), Document.class);
 		
+		// order by spec + rating
 		Collections.sort(carDetails.getSearch().getVehicleList(), new Comparator<Vehicle>() {
 			@Override
 			public int compare(Vehicle o1, Vehicle o2) {
@@ -101,6 +104,7 @@ public class TechnicalTest {
 			}
 		});
 		
+		// print out combined score desc
 		for(Vehicle car : carDetails.getSearch().getVehicleList()) {
 			Specification currentCarSpec = carSpecification.getSpecification(car.getSIPP());
 			System.out.println(car.getName() + "-" 
