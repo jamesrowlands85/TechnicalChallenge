@@ -15,13 +15,51 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TechnicalTest {
 
 	public static void main(String[] args) throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		
+		ObjectMapper mapper = new ObjectMapper();		
 		TechnicalTest.class.getResourceAsStream("/vehicles.json");
-		Document carDetails = mapper.readValue(TechnicalTest.class.getResourceAsStream("/vehicles.json"), Document.class);
 		
-		SpecificationRepository carSpecification = new SpecificationRepository();
+		Document carDetails = parseTechnicalTestJson(mapper);
 		
+		SpecificationRepository carSpecification = new SpecificationRepository();	
+		
+		System.out.println("Cars with price");
+		System.out.println("");
+		
+		printCarNameAndPrice(carDetails);
+		
+		System.out.println("");
+		System.out.println("Cars with specification");
+		System.out.println("");
+		
+		carDetails = parseTechnicalTestJson(mapper);
+		
+		printCarSpecification(carDetails, carSpecification);
+		
+		
+		System.out.println("");
+		System.out.println("Cars Ordered by Rating");
+		System.out.println("");
+		
+		carDetails = parseTechnicalTestJson(mapper);
+		
+		printCarDetailsByRatingDescending(carDetails, carSpecification);
+		
+		System.out.println("");
+		System.out.println("Cars Ordered by combined Scores");
+		System.out.println("");
+		
+		carDetails = parseTechnicalTestJson(mapper);
+		
+		printCombinedScoreDescending(carDetails, carSpecification);
+		
+	}
+
+	private static Document parseTechnicalTestJson(ObjectMapper mapper)
+			throws IOException, JsonParseException, JsonMappingException {
+		return mapper.readValue(TechnicalTest.class.getResourceAsStream("/vehicles.json"), Document.class);
+	}
+
+	private static void printCarNameAndPrice(Document carDetails) {
 		Collections.sort(carDetails.getSearch().getVehicleList(), new Comparator<Vehicle>() {
 			@Override
 			public int compare(Vehicle o1, Vehicle o2) {
@@ -29,21 +67,14 @@ public class TechnicalTest {
 			}
 		});
 		
-		
-		System.out.println("Cars with price");
-		System.out.println("");
-		
 		// print out car name and price
 		for(Vehicle car : carDetails.getSearch().getVehicleList()) {
 			System.out.println(car.getName() + "-" + car.getPrice());
 		}
-		
-		System.out.println("");
-		System.out.println("Cars with specification");
-		System.out.println("");
-		
-		carDetails = mapper.readValue(TechnicalTest.class.getResourceAsStream("/vehicles.json"), Document.class);
-		
+	}
+
+	private static void printCarSpecification(Document carDetails,
+			SpecificationRepository carSpecification) {
 		// print out specification
 		for(Vehicle car : carDetails.getSearch().getVehicleList()) {
 			Specification currentCarSpec = carSpecification.getSpecification(car.getSIPP());
@@ -53,14 +84,10 @@ public class TechnicalTest {
 								+ currentCarSpec.getTransmission() + "-" 
 								+ currentCarSpec.getFuel());
 		}
-		
-		
-		System.out.println("");
-		System.out.println("Cars Ordered by Rating");
-		System.out.println("");
-		
-		carDetails = mapper.readValue(TechnicalTest.class.getResourceAsStream("/vehicles.json"), Document.class);
-		
+	}
+
+	private static void printCarDetailsByRatingDescending(Document carDetails,
+			SpecificationRepository carSpecification) {
 		// print by rating
 		Map<String, List<Vehicle>> carsByType = new HashMap<>();
 		
@@ -87,13 +114,10 @@ public class TechnicalTest {
 			Specification currentCarSpec = carSpecification.getSpecification(highestRatedCar.getSIPP());
 			System.out.println(highestRatedCar.getName() + "-" + currentCarSpec.getCarType() + "-" + highestRatedCar.getSupplier() + "-" + highestRatedCar.getRating());
 		}
-		
-		System.out.println("");
-		System.out.println("Cars Ordered by combined Scores");
-		System.out.println("");
-		
-		carDetails = mapper.readValue(TechnicalTest.class.getResourceAsStream("/vehicles.json"), Document.class);
-		
+	}
+
+	private static void printCombinedScoreDescending(	Document carDetails,
+														SpecificationRepository carSpecification) {
 		// order by spec + rating
 		Collections.sort(carDetails.getSearch().getVehicleList(), new Comparator<Vehicle>() {
 			@Override
@@ -112,6 +136,5 @@ public class TechnicalTest {
 								+ car.getRating() + "-" 
 								+ (car.getRating() + currentCarSpec.getScore()));
 		}
-		
 	}
 }

@@ -8,7 +8,7 @@ public class Vehicle {
 
 	private String name;
 	private BigDecimal price = null;
-	private String SIPP;
+	private String sipp;
 	private double rating = 0;
 	private String supplier = "";
 	
@@ -21,7 +21,7 @@ public class Vehicle {
 	}
 
 	public String getSIPP() {
-		return SIPP;
+		return sipp;
 	}
 
 	public double getRating() {
@@ -37,12 +37,12 @@ public class Vehicle {
 	
 	@JsonCreator
 	public Vehicle(		@JsonProperty("name") String name,
-						@JsonProperty("sipp") String SIPP,
+						@JsonProperty("sipp") String sipp,
 						@JsonProperty("price") BigDecimal price,
 						@JsonProperty("supplier") String supplier,
 						@JsonProperty("rating") double rating) {
 		this.name = name;
-		this.SIPP = SIPP;
+		this.sipp = sipp;
 		this.price = price;
 		this.supplier = supplier;
 		this.rating = rating;

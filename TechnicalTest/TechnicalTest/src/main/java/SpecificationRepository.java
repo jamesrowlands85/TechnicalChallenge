@@ -58,18 +58,9 @@ public class SpecificationRepository {
 		String transmission = transmissions.get(String.valueOf(sipp.charAt(2)));
 		String fuelAirCon = fuelAirCons.get(String.valueOf(sipp.charAt(3)));
 		
-		int score = 0;
-		if(String.valueOf(sipp.charAt(2)) == "M") {
-			score += 1;
-		}
-		else {
-			score += 5;
-		}
-		if(String.valueOf(sipp.charAt(3)) == "R") {
-			score += 2;
-		}
+		Score score = new Score();			
 		
-		return new Specification(carType, doorsCarType, transmission , fuelAirCon, score);		
+		return new Specification(carType, doorsCarType, transmission , fuelAirCon, score.calculateScore(sipp));		
 	}
 	
 
